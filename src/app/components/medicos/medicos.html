@@ -1,0 +1,49 @@
+<section id="medicos" class="container py-5">
+  <div class="section-heading text-center">
+    <p class="eyebrow">Nuestro equipo</p>
+    <h2>Especialistas que te escuchan</h2>
+    <p>Selecciona una especialidad para conocer nuestro enfoque de atención.</p>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-12 col-sm-2 col-md-4 col-lg-3">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white fw-semibold">Especialidades</div>
+        <div class="list-group list-group-flush">
+          @for (esp of especialidades; track esp) {
+            <button class="list-group-item list-group-item-action" type="button"
+              [class.active]="especialidadSeleccionada() === esp"
+              (click)="cambiarEspecialidad(esp)">
+              {{ esp === 'Nutrición y Dietética Terapéutica' ? 'Nutrición y Dietética' : esp }}
+            </button>
+          }
+        </div>
+        <div class="card-body bg-light small text-secondary">{{ descripcionActual() }}</div>
+      </div>
+    </div>
+
+    <div class="col-12 col-sm-10 col-md-8 col-lg-9">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        @for (medico of medicosFiltrados(); track medico.id) {
+          <div class="col">
+            <article class="card h-100 shadow-sm doctor-card">
+              <img [src]="imagenMedico(medico.id)" class="card-img-top doctor-image" [alt]="'Foto de Dr. ' + medico.nombres + ' ' + medico.apellidos">
+              <div class="card-body d-flex flex-column">
+                <h3 class="h5 card-title">Dr. {{ medico.nombres }} {{ medico.apellidos }}</h3>
+                <p class="text-primary fw-semibold mb-2">{{ medico.especialidad }}</p>
+                <p class="card-text flex-grow-1">{{ medico.bio }}</p>
+                <button class="btn btn-primary align-self-start" type="button" (click)="agendarConMedico(medico.id)">
+                  <i class="bi bi-calendar-check me-1" aria-hidden="true"></i>Agendar cita
+                </button>
+              </div>
+            </article>
+          </div>
+        } @empty {
+          <div class="col-12 text-center py-4">
+            <p class="text-muted">No hay médicos registrados para esta especialidad.</p>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>

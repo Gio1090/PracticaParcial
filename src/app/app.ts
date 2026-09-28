@@ -1,12 +1,20 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+import { Header } from './components/header/header';
+import { Navbar } from './components/navbar/navbar';
+import { Footer } from './components/footer/footer';
+import { Inicio } from './components/inicio/inicio';
+import { Medicos } from './components/medicos/medicos';
+import { Registro } from './components/registro/registro';
 
 @Component({
-  imports: [RouterOutlet],
   selector: 'app-root',
-  styleUrl: './app.css',
+  standalone: true,
+  imports: [CommonModule, Header, Navbar, Footer, Inicio, Medicos, Registro],
   templateUrl: './app.html',
+  styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('PracticaParcial');
+  // El estado principal de la aplicación está descentralizado en los componentes.
 }

@@ -1,0 +1,34 @@
+body {
+  color: #263238;
+  font-family: Arial, sans-serif;
+}
+
+.hero-image {
+  height: 65vh;
+  min-height: 380px;
+  object-fit: cover;
+  filter: brightness(0.62);
+}
+
+.carousel-caption {
+  top: 35%;
+  bottom: auto;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.65);
+}
+
+.carousel-caption h1,
+.carousel-caption h2 {
+  font-weight: 700;
+}
+
+.doctor-image {
+  height: 150px;
+  object-fit: cover;
+}
+
+@media (max-width: 575.98px) {
+  .carousel-caption h1,
+  .carousel-caption h2 {
+    font-size: 1.5rem;
+  }
+}

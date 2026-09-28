@@ -1,0 +1,16 @@
+<nav class="navbar navbar-expand-md navbar-dark bg-primary sticky-top shadow-sm" aria-label="Navegación principal">
+  <div class="container">
+    <span class="navbar-brand d-md-none mb-0">Menú principal</span>
+    <button class="navbar-toggler" type="button" (click)="alternarMenu()" [attr.aria-expanded]="menuAbierto" aria-label="Abrir menú">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" [class.show]="menuAbierto">
+      <div class="navbar-nav ms-auto align-items-md-center">
+        <button class="nav-link btn btn-link text-start" type="button" (click)="navegar('inicio')">Inicio</button>
+        <button class="nav-link btn btn-link text-start" type="button" (click)="navegar('medicos')">Médicos</button>
+        <button class="nav-link btn btn-link text-start" type="button" (click)="navegar('registro')">Registro</button>
+        <button class="btn btn-warning ms-md-3 mt-2 mt-md-0" type="button" (click)="navegar('registro')">Agendar cita</button>
+      </div>
+    </div>
+  </div>
+</nav>

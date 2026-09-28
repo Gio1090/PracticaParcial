@@ -1,0 +1,94 @@
+<section id="registro" class="registration-band py-5">
+  <div class="container">
+    <div class="text-center mb-5">
+      <p class="text-uppercase text-primary fw-semibold mb-2">Da el primer paso</p>
+      <h2 class="display-6 fw-bold">Registra tus datos y agenda tu cita</h2>
+      <p class="lead text-secondary">Completa los campos obligatorios para registrarte y agendar una cita.</p>
+    </div>
+
+    @if (mensaje()) {
+      <div class="alert mb-4" [class.alert-danger]="mensajeEsError()" [class.alert-success]="!mensajeEsError()" role="alert">
+        <div class="d-flex justify-content-between align-items-start gap-3">
+          <span>{{ mensaje() }}</span>
+          <button type="button" class="btn-close" aria-label="Cerrar mensaje" (click)="cerrarMensaje()"></button>
+        </div>
+      </div>
+    }
+
+    <div class="row justify-content-center g-4">
+      <div class="col-12 col-lg-5">
+        <div class="card h-100 shadow-sm">
+          <div class="card-header bg-white py-3"><h3 class="h4 mb-0">Nuevo usuario</h3></div>
+          <div class="card-body">
+            <form (ngSubmit)="registrarPaciente(formPaciente)" #formPaciente="ngForm" novalidate>
+              <div class="mb-3">
+                <label for="nombres" class="form-label">Nombres</label>
+                <input id="nombres" class="form-control" type="text" name="nombres" [(ngModel)]="pacienteData.nombres" required minlength="3" maxlength="30" #nom="ngModel" aria-describedby="nombres-ayuda">
+                <div id="nombres-ayuda" class="form-text">Escribe tu nombre completo.</div>
+                @if (nom.invalid && (nom.dirty || nom.touched)) { <div class="text-danger small mt-1">Debe tener entre 3 y 30 caracteres.</div> }
+              </div>
+              <div class="mb-3">
+                <label for="apellidos" class="form-label">Apellidos</label>
+                <input id="apellidos" class="form-control" type="text" name="apellidos" [(ngModel)]="pacienteData.apellidos" required minlength="3" maxlength="30" #ape="ngModel" aria-describedby="apellidos-ayuda">
+                <div id="apellidos-ayuda" class="form-text">Usa tus apellidos tal como aparecen en tu documento.</div>
+                @if (ape.invalid && (ape.dirty || ape.touched)) { <div class="text-danger small mt-1">Debe tener entre 3 y 30 caracteres.</div> }
+              </div>
+              <div class="form-check form-check-inline mb-4">
+                <input id="terminos" class="form-check-input" type="checkbox" name="aceptaTerminos" [(ngModel)]="pacienteData.aceptaTerminos" required #terminos="ngModel">
+                <label class="form-check-label" for="terminos">Acepto el tratamiento de mis datos</label>
+              </div>
+              @if (terminos.invalid && (terminos.dirty || terminos.touched)) { <div class="text-danger small mb-3">Necesitamos que aceptes el tratamiento de tus datos.</div> }
+              <div class="d-flex justify-content-start">
+                <button class="btn btn-primary w-100" type="submit">Registrarme</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-7">
+        <div class="card h-100 shadow-sm">
+          <div class="card-header bg-white py-3"><h3 class="h4 mb-0">Agendar cita</h3></div>
+          <div class="card-body">
+            <form (ngSubmit)="agendarCita(formCitas)" #formCitas="ngForm" novalidate>
+              <div class="row g-3">
+                <div class="col-12 col-md-6">
+                  <label for="fecha" class="form-label">Fecha</label>
+                  <input id="fecha" class="form-control" type="date" name="fecha" [(ngModel)]="citaData.fecha" required #fechaCita="ngModel">
+                  @if (fechaCita.invalid && (fechaCita.dirty || fechaCita.touched)) { <div class="text-danger small mt-1">Escoge una fecha para la cita.</div> }
+                </div>
+                <div class="col-6 col-md-3">
+                  <label for="horaInicio" class="form-label">Inicio</label>
+                  <input id="horaInicio" class="form-control" type="time" name="horaInicio" [(ngModel)]="citaData.horaInicio" required #inicioCita="ngModel">
+                  @if (inicioCita.invalid && (inicioCita.dirty || inicioCita.touched)) { <div class="text-danger small mt-1">Indica la hora de inicio.</div> }
+                </div>
+                <div class="col-6 col-md-3">
+                  <label for="horaFin" class="form-label">Fin</label>
+                  <input id="horaFin" class="form-control" type="time" name="horaFin" [(ngModel)]="citaData.horaFin" required #finCita="ngModel">
+                  @if (finCita.invalid && (finCita.dirty || finCita.touched)) { <div class="text-danger small mt-1">Indica la hora de fin.</div> }
+                </div>
+                <div class="col-12 col-md-6">
+                  <label for="idMedico" class="form-label">Médico especialista</label>
+                  <select id="idMedico" class="form-select" name="idMedico" [ngModel]="clinicaService.medicoSeleccionado()" (ngModelChange)="clinicaService.medicoSeleccionado.set($event)" required #medicoCita="ngModel">
+                    <option value="">Seleccione un médico</option>
+                    @for (medico of clinicaService.medicos(); track medico.id) { <option [value]="medico.id">Dr. {{ medico.nombres }} {{ medico.apellidos }} - {{ medico.especialidad }}</option> }
+                  </select>
+                  @if (medicoCita.invalid && (medicoCita.dirty || medicoCita.touched)) { <div class="text-danger small mt-1">Escoge el médico que te atenderá.</div> }
+                </div>
+                <div class="col-12 col-md-6">
+                  <label for="idPaciente" class="form-label">Paciente registrado</label>
+                  <select id="idPaciente" class="form-select" name="idPaciente" [(ngModel)]="citaData.idPaciente" required #pacienteCita="ngModel">
+                    <option value="">Seleccione un paciente</option>
+                    @for (paciente of clinicaService.pacientes(); track paciente.id) { <option [value]="paciente.id">{{ paciente.nombres }} {{ paciente.apellidos }}</option> }
+                  </select>
+                  @if (pacienteCita.invalid && (pacienteCita.dirty || pacienteCita.touched)) { <div class="text-danger small mt-1">Escoge un paciente registrado.</div> }
+                </div>
+              </div>
+              <button class="btn btn-primary w-100 mt-4" type="submit">Confirmar cita</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

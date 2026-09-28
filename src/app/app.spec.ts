@@ -19,6 +19,6 @@ describe('App', () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, PracticaParcial');
+    expect(compiled.querySelector('h1')?.textContent).toContain('La salud que necesitas, cerca de ti');
   });
 });
